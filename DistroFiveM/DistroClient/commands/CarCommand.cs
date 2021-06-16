@@ -8,7 +8,7 @@ namespace DistroClient.Commands {
         public CarCommand() {
             EventHandlers["onClientResourceStart"] += new Action<string>(OnClientResourceStart);
 
-            EventHandlers["CarAccept"] += new Action<string>(OnCarAccept);
+            EventHandlers["Accept_Car"] += new Action<string>(OnCarAccept);
         }
 
         private async void OnCarAccept(string strCarName) {
@@ -31,7 +31,7 @@ namespace DistroClient.Commands {
             // tell the player
             TriggerEvent("chat:addMessage", new {
                 color = new[] { 255, 0, 0 },
-                args = new[] { "[CarSpawner]", $"Woohoo! Enjoy your new ^*{strCarName}!" }
+                args = new[] { "[d1str0]", $"Curta seu novo ^*{strCarName}!" }
             });
         }
 
@@ -52,7 +52,7 @@ namespace DistroClient.Commands {
                     strCarModelName = args[0].ToString();
                 }
 
-                TriggerServerEvent("CarRequest", strCarModelName);
+                TriggerServerEvent("Request_Car", strCarModelName);
 
                 
             }), false);

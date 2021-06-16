@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="commands\CarCommand.cs" />
     <Compile Include="commands\DistroCommand.cs" />
+    <Compile Include="commands\NoClipCommand.cs" />
     <Compile Include="GameManager.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="managers\DatabaseManager.cs" />

@@ -46,8 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CarCommand.cs" />
-    <Compile Include="DistroCommand.cs" />
+    <Compile Include="commands\CarCommand.cs" />
+    <Compile Include="commands\DistroCommand.cs" />
+    <Compile Include="commands\NoClipCommand.cs" />
+    <Compile Include="enum\GameKey.cs" />
+    <Compile Include="enum\UserRole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
