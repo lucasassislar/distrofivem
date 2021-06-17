@@ -62,6 +62,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="commands\WeaponCommand.cs" />
+    <Compile Include="commands\DemoteCommand.cs" />
+    <Compile Include="commands\FixCommand.cs" />
+    <Compile Include="commands\DvCommand.cs" />
     <Compile Include="commands\CarCommand.cs" />
     <Compile Include="commands\DistroCommand.cs" />
     <Compile Include="commands\PromoteCommand.cs" />

@@ -48,6 +48,10 @@
   <ItemGroup>
     <Compile Include="commands\CarCommand.cs" />
     <Compile Include="commands\DistroCommand.cs" />
+    <Compile Include="commands\FixCommand.cs" />
+    <Compile Include="commands\DvCommand.cs" />
+    <Compile Include="commands\DemoteCommand.cs" />
+    <Compile Include="commands\WeaponCommand.cs" />
     <Compile Include="commands\PromoteCommand.cs" />
     <Compile Include="commands\StatusCommand.cs" />
     <Compile Include="commands\NoClipCommand.cs" />

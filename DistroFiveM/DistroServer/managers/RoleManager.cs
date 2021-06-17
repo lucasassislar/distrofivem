@@ -25,6 +25,10 @@ namespace DistroServer.Managers {
             dictCommands.Add("nc", NoClipCommand.HandleRequest);
             dictCommands.Add("status", StatusCommand.HandleRequest);
             dictCommands.Add("promote", PromoteCommand.HandleRequest);
+            dictCommands.Add("demote", DemoteCommand.HandleRequest);
+            dictCommands.Add("dv", DvCommand.HandleRequest);
+            dictCommands.Add("fix", FixCommand.HandleRequest);
+            dictCommands.Add("weapon", WeaponCommand.HandleRequest);
         }
 
         private void OnClientRequest([FromSource] Player player, string strRequestName, string strRequestParam) {

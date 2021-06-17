@@ -86,6 +86,18 @@ namespace DistroServer.Managers {
             return true;
         }
 
+        public bool DemoteToStandard(string strName) {
+            var find = DbUser.Find(_ => _.name == strName);
+
+            User user = find.FirstOrDefault();
+            if (user == null) {
+                return false;
+            }
+
+            DbUser.UpdateOne(_ => _.name == strName, Builders<User>.Update.Set("role", UserRole.Standard));
+            return true;
+        }
+
         public void UpdateInventory(User user) {
             Item item = DbItem.Find(c => c.type == "drone").FirstOrDefault();
             DbUser.UpdateOne(c => c.id == user.id, Builders<User>.Update.Set("inventory", new ObjectId[] { item.id }));
