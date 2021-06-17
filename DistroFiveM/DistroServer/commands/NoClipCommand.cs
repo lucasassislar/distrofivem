@@ -4,15 +4,12 @@ using CitizenFX.Core;
 using static CitizenFX.Core.Native.API;
 
 namespace DistroServer.Commands {
-    public class NoClipCommand : BaseScript {
+    public class NoClipCommand {
         public NoClipCommand() {
-            EventHandlers["Request_NoClip"] += new Action<Player>(NoClipRequest);
         }
 
-        private void NoClipRequest([FromSource] Player player) {
-            if (GameManager.Singleton.Database.HasPermission(player, UserRole.Admin)) {
-                player.TriggerEvent("Accept_NoClip");
-            }
+        public static bool HandleRequest(Player player, ref string strRequestParam) {
+            return Core.Singleton.Database.HasPermission(player, UserRole.Admin);
         }
     }
 }

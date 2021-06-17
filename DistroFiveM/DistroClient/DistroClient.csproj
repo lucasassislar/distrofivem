@@ -48,10 +48,15 @@
   <ItemGroup>
     <Compile Include="commands\CarCommand.cs" />
     <Compile Include="commands\DistroCommand.cs" />
+    <Compile Include="commands\StatusCommand.cs" />
     <Compile Include="commands\NoClipCommand.cs" />
     <Compile Include="enum\GameKey.cs" />
     <Compile Include="enum\UserRole.cs" />
+    <Compile Include="RoleManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="managers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

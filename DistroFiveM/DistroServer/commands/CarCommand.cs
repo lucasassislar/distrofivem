@@ -4,15 +4,12 @@ using CitizenFX.Core;
 using static CitizenFX.Core.Native.API;
 
 namespace DistroServer.Commands {
-    public class CarCommand : BaseScript {
+    public class CarCommand {
         public CarCommand() {
-            EventHandlers["Request_Car"] += new Action<Player, string>(CarRequest);
         }
 
-        private void CarRequest([FromSource] Player player, string carName) {
-            if (GameManager.Singleton.Database.HasPermission(player, UserRole.Admin)) {
-                player.TriggerEvent("Accept_Car", carName);
-            }
+        public static bool HandleRequest(Player player, ref string strRequestParam) {
+            return Core.Singleton.Database.HasPermission(player, UserRole.Admin);
         }
     }
 }

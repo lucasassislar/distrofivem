@@ -6,15 +6,7 @@ using CitizenFX.Core;
 using static CitizenFX.Core.Native.API;
 
 namespace DistroClient.Commands {
-    public class NoClipCommand : BaseScript {
-        public NoClipCommand() {
-            EventHandlers["onClientResourceStart"] += new Action<string>(OnClientResourceStart);
-
-            EventHandlers["Accept_NoClip"] += new Action(NoClipAccept);
-
-            Tick += NoClipCommand_Tick;
-        }
-
+    public class NoClipCommand : DistroCommand {
         private bool bHasNoClipPermission;
 
         private bool bNoClipEnabled;
@@ -27,6 +19,40 @@ namespace DistroClient.Commands {
         private float fZ = 0.2f;
         private float fH = 3;
 
+        public NoClipCommand() {
+            Tick += NoClipCommand_Tick;
+        }
+
+        public override void OnStart() {
+            RoleManager.Singleton.RegisterCommand("noclip", this);
+            RoleManager.Singleton.RegisterCommand("nc", this);
+
+            RegisterCommand("noclip", new Action<int, List<object>, string>(async (source, args, raw) => {
+                TriggerEvent("chat:addMessage", new {
+                    color = new[] { 255, 0, 0 },
+                    args = new[] { "[d1str0]", $"Pedindo no clip ao servidor..." }
+                });
+
+                if (this.bHasNoClipPermission) {
+                    bNoClipEnabled = !bNoClipEnabled;
+                    UpdateNoClip();
+                } else {
+                    TriggerServerEvent("Request", "noclip");
+                }
+            }), false);
+        }
+
+        public override void OnAccept(string strParam) {
+            bHasNoClipPermission = true;
+            bNoClipEnabled = true;
+            UpdateNoClip();
+
+            TriggerEvent("chat:addMessage", new {
+                color = new[] { 255, 0, 0 },
+                args = new[] { "[d1str0]", $"Curta seu no clip :)" }
+            });
+        }
+
         private async Task NoClipCommand_Tick() {
             if (!bHasNoClipPermission) {
                 return;
@@ -34,7 +60,7 @@ namespace DistroClient.Commands {
 
             if (IsControlJustPressed(1, (int)GameKey.F1)) {
                 bNoClipEnabled = !bNoClipEnabled;
-                
+
                 UpdateNoClip();
             }
 
@@ -89,39 +115,6 @@ namespace DistroClient.Commands {
             FreezeEntityPosition(nEntity, bNoClipEnabled);
             SetEntityInvincible(nEntity, bNoClipEnabled);
             SetVehicleRadioEnabled(nEntity, !bNoClipEnabled);
-        }
-
-        private void NoClipAccept() {
-            bHasNoClipPermission = true;
-            bNoClipEnabled = true;
-            UpdateNoClip();
-
-            TriggerEvent("chat:addMessage", new {
-                color = new[] { 255, 0, 0 },
-                args = new[] { "[d1str0]", $"Curta seu no clip :)" }
-            });
-        }
-
-        private void OnClientResourceStart(string resourceName) {
-            if (GetCurrentResourceName() != resourceName) {
-                return;
-            }
-
-            RegisterCommand("noclip", new Action<int, List<object>, string>(async (source, args, raw) => {
-                TriggerEvent("chat:addMessage", new {
-                    color = new[] { 255, 0, 0 },
-                    args = new[] { "[d1str0]", $"Pedindo no clip ao servidor..." }
-                });
-
-                if (this.bHasNoClipPermission) {
-                    bNoClipEnabled = !bNoClipEnabled;
-                    UpdateNoClip();
-                } else {
-                    TriggerServerEvent("Request_NoClip");
-                }
-            }), false);
-
-
         }
     }
 }

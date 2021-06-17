@@ -60,7 +60,7 @@ namespace DistroServer.Managers {
             }
         }
 
-        public void IncreaseVersion() {
+        public int IncreaseVersion() {
             var find = DbStatus.Find(_ => true);
             ServerStatus status;
             if (find.CountDocuments() == 0) {
@@ -73,6 +73,8 @@ namespace DistroServer.Managers {
                 DbStatus.UpdateOne(Builders<ServerStatus>.Filter.Eq("_id", status.id), Builders<ServerStatus>.Update.Set("version", status.version + 1));
             }
             Globals.Version = status.version;
+
+            return status.version;
         }
 
         public void Initialize() {

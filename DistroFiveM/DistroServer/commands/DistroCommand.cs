@@ -1,19 +1,10 @@
-﻿using System;
+﻿using CitizenFX.Core;
+using System;
 using System.Collections.Generic;
-using CitizenFX.Core;
-using static CitizenFX.Core.Native.API;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace DistroServer.Commands {
-    public class DistroCommand : BaseScript {
-        public DistroCommand() {
-            EventHandlers["DistroRequest"] += new Action<Player>(OnDistro);
-        }
-
-        private void OnDistro([FromSource] Player player) {
-            GameManager.Singleton.Database.IncreaseVersion();
-            GameManager.Singleton.Database.SavePlayer(player);
-
-            player.TriggerEvent("DistroReceive", Globals.Version);
-        }
-    }
+namespace DistroServer {
+    public delegate bool DistroCommand(Player player, ref string strRequestParam);
 }

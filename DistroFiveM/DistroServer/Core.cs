@@ -6,15 +6,17 @@ using DistroServer.Model;
 using static CitizenFX.Core.Native.API;
 
 namespace DistroServer {
-    public class GameManager : BaseScript {
-        public static GameManager Singleton { get; private set; }
+    public class Core : BaseScript {
+        public static Core Singleton { get; private set; }
 
-        public DatabaseManager Database { get; set; }
+        public DatabaseManager Database { get; private set; }
 
-        public GameManager() {
+
+        public Core() {
             Singleton = this;
 
             Database = new DatabaseManager();
+
             EventHandlers["onServerResourceStart"] += new Action<string>(OnServerResourceStart);
         }
 

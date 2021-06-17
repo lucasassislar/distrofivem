@@ -1,37 +1,31 @@
-﻿using System;
+﻿using CitizenFX.Core;
+using System;
 using System.Collections.Generic;
-using CitizenFX.Core;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using static CitizenFX.Core.Native.API;
 
-namespace DistroClient {
+namespace DistroClient.Commands {
     public class DistroCommand : BaseScript {
         public DistroCommand() {
             EventHandlers["onClientResourceStart"] += new Action<string>(OnClientResourceStart);
-
-            EventHandlers["DistroReceive"] += new Action<int>(OnDistroReceive);
         }
 
-        private void OnDistroReceive(int version) {
-            // tell the player
-            TriggerEvent("chat:addMessage", new {
-                color = new[] { 255, 0, 0 },
-                args = new[] { "[d1str0]", $"Bem vindo a versao {version}" }
-            });
+        public virtual async void OnAccept(string strParam) {
+
         }
 
-        private void OnClientResourceStart(string resourceName) {
+        public virtual void OnStart() {
+
+        }
+
+        private async void OnClientResourceStart(string resourceName) {
             if (GetCurrentResourceName() != resourceName) {
                 return;
             }
 
-            RegisterCommand("distro", new Action<int, List<object>, string>(async (source, args, raw) => {
-                TriggerEvent("chat:addMessage", new {
-                    color = new[] { 255, 0, 0 },
-                    args = new[] { "[d1str0]", $"Pedindo versao ao servidor..." }
-                });
-
-                TriggerServerEvent("DistroRequest");
-            }), false);
+            OnStart();
         }
     }
 }

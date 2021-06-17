@@ -64,10 +64,12 @@
   <ItemGroup>
     <Compile Include="commands\CarCommand.cs" />
     <Compile Include="commands\DistroCommand.cs" />
+    <Compile Include="commands\StatusCommand.cs" />
     <Compile Include="commands\NoClipCommand.cs" />
-    <Compile Include="GameManager.cs" />
+    <Compile Include="Core.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="managers\DatabaseManager.cs" />
+    <Compile Include="managers\RoleManager.cs" />
     <Compile Include="model\ServerStatus.cs" />
     <Compile Include="model\User.cs" />
     <Compile Include="enum\UserRole.cs" />
