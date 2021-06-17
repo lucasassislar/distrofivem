@@ -14,5 +14,9 @@ namespace DistroServer.Model {
         public string fiveM { get; set; }
 
         public string role { get; set; }
+
+        public string name { get; set; }
+
+        public ObjectId[] inventory { get; set; }
     }
 }

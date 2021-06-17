@@ -48,16 +48,18 @@
   <ItemGroup>
     <Compile Include="commands\CarCommand.cs" />
     <Compile Include="commands\DistroCommand.cs" />
+    <Compile Include="commands\PromoteCommand.cs" />
     <Compile Include="commands\StatusCommand.cs" />
     <Compile Include="commands\NoClipCommand.cs" />
     <Compile Include="enum\GameKey.cs" />
     <Compile Include="enum\UserRole.cs" />
+    <Compile Include="items\BaseItem.cs" />
+    <Compile Include="items\DroneItem.cs" />
+    <Compile Include="managers\PlayerManager.cs" />
     <Compile Include="RoleManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="managers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>del "C:\dev\fivem\txData\CFXDefault_C7F864.base\resources\distroclient\DistroClient.net.dll"

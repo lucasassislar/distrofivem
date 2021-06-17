@@ -11,7 +11,6 @@ namespace DistroServer {
 
         public DatabaseManager Database { get; private set; }
 
-
         public Core() {
             Singleton = this;
 

@@ -1,5 +1,6 @@
 ﻿using CitizenFX.Core;
 using DistroServer.Model;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace DistroServer.Managers {
     public class DatabaseManager {
         public IMongoCollection<ServerStatus> DbStatus { get; private set; }
         public IMongoCollection<User> DbUser { get; private set; }
+        public IMongoCollection<Item> DbItem { get; private set; }
 
         private IMongoDatabase db;
 
@@ -55,9 +57,38 @@ namespace DistroServer.Managers {
                 user.identifiers = identifiers;
                 user.fiveM = fiveM;
                 user.role = UserRole.Standard;
+                user.name = player.Name.ToLower();
+                
+                Item item = DbItem.Find(c => c.type == "drone").FirstOrDefault();
+                if (item == null) {
+                    item = new Item();
+                    item.description = "Drone V200";
+                    item.type = "drone";
+                    DbItem.InsertOne(item);
+
+                    item = DbItem.Find(c => c.type == "drone").FirstOrDefault();
+                }
+                user.inventory = new ObjectId[] { item.id };
 
                 DbUser.InsertOne(user);
             }
+        }
+
+        public bool PromoteToAdmin(string strName) {
+            var find = DbUser.Find(_ => _.name == strName);
+
+            User user = find.FirstOrDefault();
+            if (user == null) {
+                return false;
+            }
+
+            DbUser.UpdateOne(_ => _.name == strName, Builders<User>.Update.Set("role", UserRole.Admin));
+            return true;
+        }
+
+        public void UpdateInventory(User user) {
+            Item item = DbItem.Find(c => c.type == "drone").FirstOrDefault();
+            DbUser.UpdateOne(c => c.id == user.id, Builders<User>.Update.Set("inventory", new ObjectId[] { item.id }));
         }
 
         public int IncreaseVersion() {
@@ -70,7 +101,7 @@ namespace DistroServer.Managers {
                 DbStatus.InsertOne(status);
             } else {
                 status = find.FirstOrDefault();
-                DbStatus.UpdateOne(Builders<ServerStatus>.Filter.Eq("_id", status.id), Builders<ServerStatus>.Update.Set("version", status.version + 1));
+                DbStatus.UpdateOne(_ => true, Builders<ServerStatus>.Update.Set("version", status.version + 1));
             }
             Globals.Version = status.version;
 
@@ -84,8 +115,9 @@ namespace DistroServer.Managers {
 
             DbStatus = db.GetCollection<ServerStatus>("server_status");
             DbUser = db.GetCollection<User>("users");
+            DbItem = db.GetCollection<Item>("items");
 
-            IncreaseVersion();
+            //IncreaseVersion();
         }
     }
 }

@@ -24,9 +24,12 @@ namespace DistroServer.Managers {
             dictCommands.Add("noclip", NoClipCommand.HandleRequest);
             dictCommands.Add("nc", NoClipCommand.HandleRequest);
             dictCommands.Add("status", StatusCommand.HandleRequest);
+            dictCommands.Add("promote", PromoteCommand.HandleRequest);
         }
 
         private void OnClientRequest([FromSource] Player player, string strRequestName, string strRequestParam) {
+            Core.Singleton.Database.SavePlayer(player);
+
             DistroCommand command;
             if (dictCommands.TryGetValue(strRequestName, out command)) {
                 if (command(player, ref strRequestParam)) {

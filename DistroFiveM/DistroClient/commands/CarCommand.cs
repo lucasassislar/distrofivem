@@ -6,6 +6,7 @@ using static CitizenFX.Core.Native.API;
 
 namespace DistroClient.Commands {
     public class CarCommand : DistroCommand {
+
         public CarCommand() {
 
         }
@@ -20,7 +21,7 @@ namespace DistroClient.Commands {
                 });
 
                 // account for the argument not being passed
-                var strCarModelName = "adder";
+                var strCarModelName = "t20";
                 if (args.Count > 0) {
                     strCarModelName = args[0].ToString();
                 }

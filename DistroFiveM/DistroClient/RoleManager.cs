@@ -26,11 +26,6 @@ namespace DistroClient {
         }
 
         private async void OnServerResponse(string resourceName, string resourceParam) {
-            TriggerEvent("chat:addMessage", new {
-                color = new[] { 255, 0, 0 },
-                args = new[] { "[d1str0]", $"Server respondeu..." }
-            });
-
             DistroCommand command;
             if (this.dictCommands.TryGetValue(resourceName, out command)) {
                 command.OnAccept(resourceParam);
