@@ -25,6 +25,10 @@ namespace DistroServer.Managers {
             return user.role == role;
         }
 
+        public Item GetItem(ObjectId itemId) {
+            return DbItem.Find(c => c.id == itemId).FirstOrDefault();
+        }
+
         public User GetUser(Player player) {
             string[] identifiers = player.Identifiers.ToList().ToArray();
             string fiveM = GetFiveM(identifiers);

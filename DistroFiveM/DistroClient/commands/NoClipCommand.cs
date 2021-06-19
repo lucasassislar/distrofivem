@@ -35,7 +35,7 @@ namespace DistroClient.Commands {
 
                 if (this.bHasNoClipPermission) {
                     bNoClipEnabled = !bNoClipEnabled;
-                    UpdateNoClip();
+                    UpdateEntity();
                 } else {
                     TriggerServerEvent("Request", "noclip");
                 }
@@ -45,7 +45,7 @@ namespace DistroClient.Commands {
         public override void OnAccept(string strParam) {
             bHasNoClipPermission = true;
             bNoClipEnabled = true;
-            UpdateNoClip();
+            UpdateEntity();
 
             TriggerEvent("chat:addMessage", new {
                 color = new[] { 255, 0, 0 },
@@ -61,7 +61,7 @@ namespace DistroClient.Commands {
             if (IsControlJustPressed(1, (int)GameKey.F1)) {
                 bNoClipEnabled = !bNoClipEnabled;
 
-                UpdateNoClip();
+                UpdateEntity();
             }
 
             if (bNoClipEnabled) {
@@ -72,7 +72,7 @@ namespace DistroClient.Commands {
 
                 if (IsDisabledControlPressed(0, (int)GameKey.F2)) {
                     bNoClipEnabled = false;
-                    UpdateNoClip();
+                    UpdateEntity();
                     return;
                 }
 
@@ -104,7 +104,7 @@ namespace DistroClient.Commands {
             }
         }
 
-        private void UpdateNoClip() {
+        private void UpdateEntity() {
             if (IsPedInAnyVehicle(PlayerPedId(), false)) {
                 nEntity = GetVehiclePedIsIn(PlayerPedId(), false);
             } else {

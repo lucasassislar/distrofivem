@@ -47,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="commands\CarCommand.cs" />
-    <Compile Include="commands\DistroCommand.cs" />
+    <Compile Include="commands\Base\DistroCommand.cs" />
     <Compile Include="commands\FixCommand.cs" />
     <Compile Include="commands\DvCommand.cs" />
     <Compile Include="commands\DemoteCommand.cs" />
@@ -57,8 +57,10 @@
     <Compile Include="commands\NoClipCommand.cs" />
     <Compile Include="enum\GameKey.cs" />
     <Compile Include="enum\UserRole.cs" />
-    <Compile Include="items\BaseItem.cs" />
+    <Compile Include="items\Base\BaseItem.cs" />
+    <Compile Include="items\Base\ControllableItem.cs" />
     <Compile Include="items\DroneItem.cs" />
+    <Compile Include="items\ItemFactory.cs" />
     <Compile Include="managers\PlayerManager.cs" />
     <Compile Include="RoleManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

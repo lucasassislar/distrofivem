@@ -7,6 +7,7 @@ using static CitizenFX.Core.Native.API;
 namespace DistroServer.Commands {
     public class StatusCommand {
         public StatusCommand() {
+
         }
 
         public static bool HandleRequest(Player player, ref string strRequestParam) {
@@ -16,6 +17,8 @@ namespace DistroServer.Commands {
             int version = Core.Singleton.Database.IncreaseVersion();
 
             strRequestParam = $"{version}:{user.role}";
+
+            Core.Singleton.UpdateInventory(player);
 
             return true;
         }

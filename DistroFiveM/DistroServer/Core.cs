@@ -17,6 +17,7 @@ namespace DistroServer {
             Database = new DatabaseManager();
 
             EventHandlers["onServerResourceStart"] += new Action<string>(OnServerResourceStart);
+            EventHandlers["playerJoining"] += new Action<Player>(OnPlayerJoining);
         }
 
         private void OnServerResourceStart(string resourceName) {
@@ -25,6 +26,20 @@ namespace DistroServer {
             }
 
             Database.Initialize();
+        }
+
+        private void OnPlayerJoining([FromSource] Player player) {
+            UpdateInventory(player);
+        }
+
+        public void UpdateInventory(Player player) {
+            User user = Database.GetUser(player);
+            player.TriggerEvent("ClearInventory");
+
+            for (int i = 0; i < user.inventory.Length; i++) {
+                Item item = Database.GetItem(user.inventory[i]);
+                player.TriggerEvent("UpdateInventory", item.type);
+            }
         }
     }
 }

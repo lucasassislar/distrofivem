@@ -76,6 +76,7 @@
     <Compile Include="managers\DatabaseManager.cs" />
     <Compile Include="managers\RoleManager.cs" />
     <Compile Include="model\Item.cs" />
+    <Compile Include="model\items\DroneItem.cs" />
     <Compile Include="model\ServerStatus.cs" />
     <Compile Include="model\User.cs" />
     <Compile Include="enum\UserRole.cs" />
