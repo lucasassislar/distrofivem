@@ -57,6 +57,16 @@ namespace DistroClient.Items {
             RenderScriptCams(true, false, 0, true, false);
         }
 
+        private Quaternion GetEntityQuat() {
+            float x = 0;
+            float y = 0;
+            float z = 0;
+            float w = 0;
+            GetEntityQuaternion(nEntity, ref x, ref y, ref z, ref w);
+
+            return new Quaternion(x, y, z, w);
+        }
+
         public override void Tick() {
             base.Tick();
 
@@ -85,6 +95,10 @@ namespace DistroClient.Items {
             } else if (IsDisabledControlPressed(0, (int)GameKey.Q)) {
                 vToMove.Z -= vSpeed.Z;
             }
+
+            Quaternion quat = GetEntityQuat();
+            vToMove = Vector3.Transform(vToMove, quat);
+
             SetEntityVelocity(nEntity, vToMove.X, vToMove.Y, vToMove.Z);
 
 
