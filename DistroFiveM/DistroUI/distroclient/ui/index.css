@@ -1,0 +1,12 @@
+#fullScreenMenu {
+    background-color:red;
+    width: 50vw;
+    height: 50vh;
+    position: absolute;
+    left: 25vw;
+    top: 25vh;
+}
+
+.invisible {
+    visibility: hidden;
+}

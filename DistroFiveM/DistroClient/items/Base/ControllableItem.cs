@@ -40,31 +40,31 @@ namespace DistroClient.Items {
         public override void Tick() {
             base.Tick();
 
-            if (bControllingItem) {
-                DisableAllControlActions(PlayerPedId());
+            //if (bControllingItem) {
+            //    DisableAllControlActions(PlayerPedId());
 
-                int nGameTimer = GetGameTimer();
-                if (nGameTimer - nTimer > 500) {
-                    if (IsDisabledControlPressed(0, (int)GameKey.E)) {
-                        bControllingItem = false;
-                        IsControlling = false;
-                        OnEndedControl();
+            //    int nGameTimer = GetGameTimer();
+            //    if (nGameTimer - nTimer > 500) {
+            //        if (IsDisabledControlPressed(0, (int)GameKey.E)) {
+            //            bControllingItem = false;
+            //            IsControlling = false;
+            //            OnEndedControl();
 
-                        UpdateEntity();
-                        return;
-                    }
-                }
-            } else {
-                if (IsControlJustPressed(1, (int)GameKey.E)) {
-                    bControllingItem = true;
-                    IsControlling = true;
-                    OnStartControl();
+            //            UpdateEntity();
+            //            return;
+            //        }
+            //    }
+            //} else {
+            //    if (IsControlJustPressed(1, (int)GameKey.E)) {
+            //        bControllingItem = true;
+            //        IsControlling = true;
+            //        OnStartControl();
 
-                    nTimer = GetGameTimer();
+            //        nTimer = GetGameTimer();
 
-                    UpdateEntity();
-                }
-            }
+            //        UpdateEntity();
+            //    }
+            //}
         }
 
         private void UpdateEntity() {

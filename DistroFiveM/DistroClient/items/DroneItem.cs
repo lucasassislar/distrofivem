@@ -15,11 +15,8 @@ namespace DistroClient.Items {
         private Vector3 vCamOffsetPos;
         private Vector3 vCamRot;
 
-
-
         private bool bSpawned;
         
-
         private float fRotationSpeed;
         private Vector3 vSpeed;
 
@@ -47,11 +44,11 @@ namespace DistroClient.Items {
         public override void OnStartControl() {
             base.OnStartControl();
 
-            //if (!bSpawned) {
-            //    bSpawned = true;
-            //    Vector3 vPlayerPos = GetEntityCoords(PlayerPedId(), false);
-            //    SetEntityCoords(nEntity, vPlayerPos.X, vPlayerPos.Y, vPlayerPos.Z, true, false, false, false);
-            //}
+            if (!bSpawned) {
+                bSpawned = true;
+                Vector3 vPlayerPos = GetEntityCoords(PlayerPedId(), false);
+                SetEntityCoords(nEntity, vPlayerPos.X, vPlayerPos.Y, vPlayerPos.Z, true, false, false, false);
+            }
 
             SetCamActive(nCamera, true);
             RenderScriptCams(true, false, 0, true, false);
