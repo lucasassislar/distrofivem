@@ -13,6 +13,7 @@ namespace DistroClient {
         W = 32,
         S = 33,
         Q = 44,
+        Z = 48,
         E = 86,
     }
 }

@@ -9,17 +9,98 @@ using static CitizenFX.Core.Native.API;
 
 namespace DistroClient.Items {
     public class DroneItem : ControllableItem {
+        private int nEntity;
         private int nCamera;
 
+        private Vector3 vCamOffsetPos;
+        private Vector3 vCamRot;
+
+
+
+        private bool bSpawned;
+        
+
+        private float fRotationSpeed;
+        private Vector3 vSpeed;
+
         public DroneItem() {
+            fRotationSpeed = 3;
+            vSpeed = new Vector3(5, 5, 3);
+            vCamOffsetPos = new Vector3(0, 0, -1);
+
             Vector3 vPos = GetEntityCoords(PlayerPedId(), false);
-            CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", vPos.X, vPos.Y, vPos.Z, 0, 0, 0, fov * 1.0f, false, 2);
+
+            float fFOV = GetGameplayCamFov();
+            nCamera = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", vPos.X, vPos.Y, vPos.Z, 0, 0, 0, fFOV, false, 2);
+
+            nEntity = CreateObject(788747387, vPos.X, vPos.Y, vPos.Z, true, false, false);
+            //SetEntityVisible(nEntity, false, false);
         }
 
-        public override void OnControl() {
-            base.OnControl();
+        public override void OnEndedControl() {
+            base.OnEndedControl();
+
+            RenderScriptCams(false, false, 0, true, false);
+            //SetEntityVisible(nEntity, false, false);
+        }
+
+        public override void OnStartControl() {
+            base.OnStartControl();
+
+            //if (!bSpawned) {
+            //    bSpawned = true;
+            //    Vector3 vPlayerPos = GetEntityCoords(PlayerPedId(), false);
+            //    SetEntityCoords(nEntity, vPlayerPos.X, vPlayerPos.Y, vPlayerPos.Z, true, false, false, false);
+            //}
+
+            SetCamActive(nCamera, true);
+            RenderScriptCams(true, false, 0, true, false);
+        }
+
+        public override void Tick() {
+            base.Tick();
+
+            if (!IsControlling) {
+                SetEntityVelocity(nEntity, 0, 0, 0);
+                return;
+            }
+
+            DisableFirstPersonCamThisFrame();
+
+            Vector3 vToMove = Vector3.Zero;
+            if (IsDisabledControlPressed(0, (int)GameKey.A)) {
+                vToMove.X -= vSpeed.X;
+            } else if (IsDisabledControlPressed(0, (int)GameKey.D)) {
+                vToMove.X += vSpeed.X;
+            }
+
+            if (IsDisabledControlPressed(0, (int)GameKey.W)) {
+                vToMove.Y += vSpeed.Y;
+            } else if (IsDisabledControlPressed(0, (int)GameKey.S)) {
+                vToMove.Y -= vSpeed.Y;
+            }
+
+            if (IsDisabledControlPressed(0, (int)GameKey.Z)) {
+                vToMove.Z += vSpeed.Z;
+            } else if (IsDisabledControlPressed(0, (int)GameKey.Q)) {
+                vToMove.Z -= vSpeed.Z;
+            }
+            SetEntityVelocity(nEntity, vToMove.X, vToMove.Y, vToMove.Z);
 
 
+            float fOffsetX = GetDisabledControlNormal(1, 1) * fRotationSpeed;
+            float fOffsetY = GetDisabledControlNormal(1, 2) * fRotationSpeed;
+
+            vCamRot.Z -= fOffsetX;
+            vCamRot.X -= fOffsetY;
+
+            SetCamRot(nCamera, vCamRot.X, vCamRot.Y, vCamRot.Z, 0);
+            SetEntityRotation(nEntity, 0, vCamRot.Y, vCamRot.Z, 0, false);
+
+            SetObjectPhysicsParams(nEntity, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
+            Vector3 vCamPos = GetEntityCoords(nEntity, false) + vCamOffsetPos;
+            SetCamCoord(nCamera, vCamPos.X, vCamPos.Y, vCamPos.Z);
         }
     }
 }

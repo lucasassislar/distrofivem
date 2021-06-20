@@ -14,11 +14,27 @@ namespace DistroClient.Items {
         private int nPlayerEntity;
         private int nTimer;
 
+        public bool IsControlling { get; private set; }
+
         public ControllableItem() {
         }
 
         public virtual void OnControl() {
 
+        }
+
+        public virtual void OnStartControl() {
+            PlayerManager.TriggerEvent("chat:addMessage", new {
+                color = new[] { 255, 0, 0 },
+                args = new[] { "[d1str0]", $"Comecou drone" }
+            });
+        }
+
+        public virtual void OnEndedControl() {
+            PlayerManager.TriggerEvent("chat:addMessage", new {
+                color = new[] { 255, 0, 0 },
+                args = new[] { "[d1str0]", $"Finalizou drone" }
+            });
         }
 
         public override void Tick() {
@@ -28,18 +44,24 @@ namespace DistroClient.Items {
                 DisableAllControlActions(PlayerPedId());
 
                 int nGameTimer = GetGameTimer();
-                if (nGameTimer - nTimer > 100) {
+                if (nGameTimer - nTimer > 500) {
                     if (IsDisabledControlPressed(0, (int)GameKey.E)) {
                         bControllingItem = false;
+                        IsControlling = false;
+                        OnEndedControl();
+
                         UpdateEntity();
                         return;
                     }
                 }
             } else {
                 if (IsControlJustPressed(1, (int)GameKey.E)) {
+                    bControllingItem = true;
+                    IsControlling = true;
+                    OnStartControl();
+
                     nTimer = GetGameTimer();
 
-                    bControllingItem = true;
                     UpdateEntity();
                 }
             }

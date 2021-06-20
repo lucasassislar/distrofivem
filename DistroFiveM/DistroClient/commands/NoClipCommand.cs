@@ -17,7 +17,7 @@ namespace DistroClient.Commands {
 
         private float fY = 0.5f;
         private float fZ = 0.2f;
-        private float fH = 3;
+        private float fRotationSpeed = 3;
 
         public NoClipCommand() {
             Tick += NoClipCommand_Tick;
@@ -90,9 +90,9 @@ namespace DistroClient.Commands {
                 }
 
                 if (IsDisabledControlPressed(0, (int)GameKey.A)) {
-                    SetEntityHeading(nEntity, GetEntityHeading(nEntity) + fH);
+                    SetEntityHeading(nEntity, GetEntityHeading(nEntity) + fRotationSpeed);
                 } else if (IsDisabledControlPressed(0, (int)GameKey.D)) {
-                    SetEntityHeading(nEntity, GetEntityHeading(nEntity) - fH);
+                    SetEntityHeading(nEntity, GetEntityHeading(nEntity) - fRotationSpeed);
                 }
 
                 Vector3 vNewPos = GetOffsetFromEntityInWorldCoords(nEntity, 0.0f, yOff * (fCurrentSpeed + 0.3f), zOff * (fCurrentSpeed + 0.3f));
