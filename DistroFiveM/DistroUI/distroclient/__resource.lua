@@ -7,5 +7,6 @@ ui_page 'ui/index.html'
 files {
     'ui/index.html',
     'ui/index.css',
-    'ui/index.js'
+    'ui/index.js',
+    'ui/resources/items/drone.jpg'
 }

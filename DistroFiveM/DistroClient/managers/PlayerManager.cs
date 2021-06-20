@@ -16,6 +16,7 @@ namespace DistroClient.Managers {
         public List<BaseItem> Items { get; private set; }
 
         private bool bLoaded;
+        private int nOptionHighlighted = -1;
 
         public PlayerManager() {
             Singleton = this;
@@ -24,7 +25,7 @@ namespace DistroClient.Managers {
             Items = new List<BaseItem>();
 
             EventHandlers["ClearInventory"] += new Action(OnClearInventory);
-            EventHandlers["UpdateInventory"] += new Action<string>(OnReceiveInventory);
+            EventHandlers["UpdateInventory"] += new Action<string, int>(OnReceiveInventory);
         }
 
         private void Load() {
@@ -52,6 +53,8 @@ namespace DistroClient.Managers {
         }
 
         private void OnClearInventory() {
+            SendNuiMessage("{ \"type\": \"clearInventory\" }");
+
             TriggerEvent("chat:addMessage", new {
                 color = new[] { 255, 0, 0 },
                 args = new[] { "[d1str0]", $"Lavo ta novo" }
@@ -60,7 +63,9 @@ namespace DistroClient.Managers {
             Items.Clear();
         }
 
-        private void OnReceiveInventory(string strItemName) {
+        private void OnReceiveInventory(string strItemName, int nSlot) {
+            SendNuiMessage("{ \"type\": \"receiveInventory\", \"item\": \"" + strItemName + "\", \"slot\": " + nSlot + "  }");
+
             TriggerEvent("chat:addMessage", new {
                 color = new[] { 255, 0, 0 },
                 args = new[] { "[d1str0]", $"Recebeu {strItemName}" }
@@ -78,12 +83,65 @@ namespace DistroClient.Managers {
         private async Task PlayerManager_Tick() {
             Load();
 
-            if (IsControlJustPressed(1, (int)GameKey.E)) {
-                TriggerEvent("chat:addMessage", new {
-                    color = new[] { 255, 0, 0 },
-                    args = new[] { "[d1str0]", $"Abrindo inventário" }
-                });
+            DisableControlAction(0, (int)Control.WeaponWheelLeftRight, true);
+            DisableControlAction(0, (int)Control.WeaponWheelNext, true);
+            DisableControlAction(0, (int)Control.WeaponWheelPrev, true);
+            DisableControlAction(0, (int)Control.WeaponWheelUpDown, true);
+            DisableControlAction(0, (int)Control.SelectWeapon, true);
+            DisableControlAction(0, (int)Control.SelectWeaponAutoRifle, true);
+            DisableControlAction(0, (int)Control.SelectWeaponHandgun, true);
+            DisableControlAction(0, (int)Control.SelectWeaponHeavy, true);
+            DisableControlAction(0, (int)Control.SelectWeaponMelee, true);
+            DisableControlAction(0, (int)Control.SelectWeaponShotgun, true);
+            DisableControlAction(0, (int)Control.SelectWeaponSmg, true);
+            DisableControlAction(0, (int)Control.SelectWeaponSniper, true);
+            DisableControlAction(0, (int)Control.SelectWeaponSpecial, true);
+            DisableControlAction(0, (int)Control.SelectWeaponUnarmed, true);
 
+            int nNewOption = -1;
+            if (IsDisabledControlJustPressed(0, (int)Control.SelectWeaponUnarmed)) {
+                // 1
+                nNewOption = 0;
+            } else if (IsDisabledControlJustPressed(0, (int)Control.SelectWeaponMelee)) {
+                // 2
+                nNewOption = 1;
+            } else if (IsDisabledControlJustPressed(0, (int)Control.SelectWeaponShotgun)) {
+                // 3
+                nNewOption = 2;
+            } else if (IsDisabledControlJustPressed(0, (int)Control.SelectWeaponHeavy)) {
+                // 4
+                nNewOption = 3;
+            } else if (IsDisabledControlJustPressed(0, (int)Control.SelectWeaponSpecial)) {
+                // 5
+                nNewOption = 4;
+            } else if (IsDisabledControlJustPressed(0, (int)Control.SelectWeaponHandgun)) {
+                // 6
+                nNewOption = 5;
+            } else if (IsDisabledControlJustPressed(0, (int)Control.SelectWeaponSmg)) {
+                // 7
+                nNewOption = 6;
+            } else if (IsDisabledControlJustPressed(0, (int)Control.SelectWeaponAutoRifle)) {
+                // 8
+                nNewOption = 7;
+            } else if (IsDisabledControlJustPressed(0, (int)Control.SelectWeaponSniper)) {
+                // 9
+                nNewOption = 8;
+            }
+
+            //Items[nOptionHighlighted].OnStartControl();
+
+            if (nNewOption != -1) {
+                if (nOptionHighlighted != -1) {
+                    if (Items.Count > nOptionHighlighted) {
+                        Items[nOptionHighlighted].OnEndedControl();
+                    }
+                }
+
+                nOptionHighlighted = nNewOption;
+                SendNuiMessage("{ \"type\": \"inventoryHighlight\", \"slot\": " + nOptionHighlighted + " }");
+            }
+
+            if (IsControlJustPressed(1, (int)GameKey.E)) {
                 SendNuiMessage("{ \"type\": \"showFullscreenUI\" }");
                 SetNuiFocus(true, true);
             }

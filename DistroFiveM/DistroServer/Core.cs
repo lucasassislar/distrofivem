@@ -38,7 +38,7 @@ namespace DistroServer {
 
             for (int i = 0; i < user.inventory.Length; i++) {
                 Item item = Database.GetItem(user.inventory[i]);
-                player.TriggerEvent("UpdateInventory", item.type);
+                player.TriggerEvent("UpdateInventory", item.type, i);
             }
         }
     }

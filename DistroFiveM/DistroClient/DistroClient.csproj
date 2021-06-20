@@ -62,7 +62,6 @@
     <Compile Include="enum\GameKey.cs" />
     <Compile Include="enum\UserRole.cs" />
     <Compile Include="items\Base\BaseItem.cs" />
-    <Compile Include="items\Base\ControllableItem.cs" />
     <Compile Include="items\DroneItem.cs" />
     <Compile Include="items\ItemFactory.cs" />
     <Compile Include="managers\PlayerManager.cs" />

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using static CitizenFX.Core.Native.API;
 
 namespace DistroClient.Items {
-    public class DroneItem : ControllableItem {
+    public class DroneItem : BaseItem {
         private int nEntity;
         private int nCamera;
 
@@ -44,12 +44,6 @@ namespace DistroClient.Items {
         public override void OnStartControl() {
             base.OnStartControl();
 
-            if (!bSpawned) {
-                bSpawned = true;
-                Vector3 vPlayerPos = GetEntityCoords(PlayerPedId(), false);
-                SetEntityCoords(nEntity, vPlayerPos.X, vPlayerPos.Y, vPlayerPos.Z, true, false, false, false);
-            }
-
             SetCamActive(nCamera, true);
             RenderScriptCams(true, false, 0, true, false);
         }
@@ -66,6 +60,12 @@ namespace DistroClient.Items {
 
         public override void Tick() {
             base.Tick();
+
+            if (!bSpawned) {
+                bSpawned = true;
+                Vector3 vPlayerPos = GetEntityCoords(PlayerPedId(), false);
+                SetEntityCoords(nEntity, vPlayerPos.X, vPlayerPos.Y, vPlayerPos.Z, true, false, false, false);
+            }
 
             if (!IsControlling) {
                 SetEntityVelocity(nEntity, 0, 0, 0);

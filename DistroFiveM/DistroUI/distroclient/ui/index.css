@@ -1,5 +1,5 @@
 #fullScreenMenu {
-    background-color:red;
+    background-color: red;
     width: 50vw;
     height: 50vh;
     position: absolute;
@@ -9,4 +9,33 @@
 
 .invisible {
     visibility: hidden;
+}
+
+#bottomMenu {
+    width: 40vw;
+    height: 7.5vh;
+    background-color: red;
+    position: absolute;
+    left: 30vw;
+    bottom: 0vh;
+    display: flex;
+    flex-direction: row;
+}
+
+.inventoryItem {
+    width: 20%;
+    height: 100%;
+    background-color: blue;
+    border-radius: 2px;
+    border-color: black;
+    border-style: solid;
+}
+
+.inventoryItemImage {
+    width: 100%;
+    height: 100%;
+}
+
+.inventoryItemHighlight {
+    border-color: red;
 }
