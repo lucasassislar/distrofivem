@@ -13,6 +13,8 @@ namespace DistroClient.Items {
         private int nCamera;
 
         private Vector3 vCamOffsetPos;
+        private Vector3 vObjectSpawnOffest;
+
         private Vector3 vCamRot;
 
         private bool bSpawned;
@@ -25,24 +27,29 @@ namespace DistroClient.Items {
             vSpeed = new Vector3(5, 5, 3);
             vCamOffsetPos = new Vector3(0, 0, -1);
 
-            Vector3 vPos = GetEntityCoords(PlayerPedId(), false);
-
-            float fFOV = GetGameplayCamFov();
-            nCamera = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", vPos.X, vPos.Y, vPos.Z, 0, 0, 0, fFOV, false, 2);
-
-            nEntity = CreateObject(788747387, vPos.X, vPos.Y, vPos.Z, true, false, false);
-            //SetEntityVisible(nEntity, false, false);
+            vObjectSpawnOffest = new Vector3(0, 0, 10);
         }
 
         public override void OnEndedControl() {
             base.OnEndedControl();
 
             RenderScriptCams(false, false, 0, true, false);
-            //SetEntityVisible(nEntity, false, false);
         }
 
         public override void OnStartControl() {
             base.OnStartControl();
+
+            Vector3 vPos = GetEntityCoords(PlayerPedId(), false);
+
+            if (nEntity == 0) {
+                Vector3 vObjPos = vPos + vObjectSpawnOffest;
+                nEntity = CreateObject(788747387, vObjPos.X, vObjPos.Y, vObjPos.Z, true, false, false);
+            }
+
+            if (nCamera == 0) {
+                float fFOV = GetGameplayCamFov();
+                nCamera = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", vPos.X, vPos.Y, vPos.Z, 0, 0, 0, fFOV, false, 2);
+            }
 
             SetCamActive(nCamera, true);
             RenderScriptCams(true, false, 0, true, false);
@@ -72,7 +79,7 @@ namespace DistroClient.Items {
                 return;
             }
 
-            DisableFirstPersonCamThisFrame();
+            //DisableFirstPersonCamThisFrame();
 
             Vector3 vToMove = Vector3.Zero;
             if (IsDisabledControlPressed(0, (int)GameKey.A)) {

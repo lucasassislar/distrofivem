@@ -17,10 +17,15 @@ function receiveInventory(nSlot, itemName) {
     arrInventoryItems[nSlot].appendChild(objImg);
 }
 
-function inventoryHighlight(nSlot) {
-    if (nLastHighlight != -1) {
-        arrInventoryItems[nLastHighlight].classList.remove('inventoryItemHighlight');
+function inventoryUnhighlight() {
+    for (let i = 0; i < arrInventoryItems.length; i++) {
+        arrInventoryItems[i].classList.remove('inventoryItemHighlight');
     }
+}
+
+function inventoryHighlight(nSlot) {
+    inventoryUnhighlight();
+
     nLastHighlight = nSlot;
 
     arrInventoryItems[nSlot].classList.add('inventoryItemHighlight');
@@ -43,6 +48,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
             receiveInventory(event.data.slot, event.data.item);
         } else if (event.data.type === 'inventoryHighlight') {
             inventoryHighlight(event.data.slot);
+        } else if (event.data.type === 'inventoryUnhighlight') {
+            inventoryUnhighlight();
         }
     });
 

@@ -128,17 +128,26 @@ namespace DistroClient.Managers {
                 nNewOption = 8;
             }
 
-            //Items[nOptionHighlighted].OnStartControl();
-
             if (nNewOption != -1) {
-                if (nOptionHighlighted != -1) {
+                if (nNewOption == nOptionHighlighted) {
                     if (Items.Count > nOptionHighlighted) {
                         Items[nOptionHighlighted].OnEndedControl();
                     }
-                }
+                    SendNuiMessage("{ \"type\": \"inventoryUnhighlight\" }");
+                    nOptionHighlighted = -1;
+                } else {
+                    if (nOptionHighlighted != -1) {
+                        if (Items.Count > nOptionHighlighted) {
+                            Items[nOptionHighlighted].OnEndedControl();
+                        }
+                    }
 
-                nOptionHighlighted = nNewOption;
-                SendNuiMessage("{ \"type\": \"inventoryHighlight\", \"slot\": " + nOptionHighlighted + " }");
+                    nOptionHighlighted = nNewOption;
+                    SendNuiMessage("{ \"type\": \"inventoryHighlight\", \"slot\": " + nOptionHighlighted + " }");
+                    if (Items.Count > nOptionHighlighted) {
+                        Items[nOptionHighlighted].OnStartControl();
+                    }
+                }
             }
 
             if (IsControlJustPressed(1, (int)GameKey.E)) {
